@@ -1,14 +1,14 @@
 Personal YouTube Watch Habits Analysis: Modeling Popularity, Category, and Timing
 
-Abstract
+## Abstract
 
 This project analyzes my personal YouTube viewing history to explore the relationship between my digital consumption patterns and public video metrics. The core methodology involves combining a private dataset of my watch history, obtained via Google Takeout, with a public dataset of video metadata, collected using the YouTube Data API v3. The aim is to understand how my viewing habits (e.g., time of day, day of week) correlate with content attributes (e.g., category, view count, like count). The project applies the full data science pipeline—including JSON parsing, API data collection, data merging, feature engineering, statistical testing, and machine learning—to identify significant relationships and build a predictive model of my content choices.
 
-Motivation
+## Motivation
 
 I chose this topic because YouTube is a significant and integrated part of my daily information consumption. I am interested in uncovering the hidden patterns within my own digital behavior, moving beyond simple screen time metrics to understand the drivers of my choices. This project allows me to explore the relationship between my personal, private decisions (what I click on) and public, external factors (such as a video's category or its mainstream popularity). By applying data science techniques to a dataset that is uniquely my own, I can gain practical experience in data enrichment (merging personal and public data), API usage, and behavioral modeling, all of which are core interests of mine.
 
-Objectives
+## Objectives
 
 To apply the full data science pipeline to a unique, personal dataset.
 
@@ -20,11 +20,11 @@ To build and evaluate a machine learning model (e.g., Decision Tree) that predic
 
 To gain hands-on experience with JSON parsing, API integration, and data merging.
 
-Data Sources
+## Data Sources
 
 This project uses a hybrid model, combining a private dataset with a public API-driven dataset. Both are ethically obtained and clearly sourced.
 
-Dataset
+## Dataset
 
 Description
 
@@ -44,7 +44,7 @@ YouTube Data API v3
 
 Both datasets will be merged using the video_ID as the primary key.
 
-Methodology
+## Methodology
 
 1. Data Collection & Cleaning
 
@@ -98,41 +98,17 @@ Target (Y): categoryName.
 
 Model: Decision Tree Classifier or Random Forest to identify the most predictive temporal features.
 
-Hypotheses
 
-#
+## Hypotheses
 
-Hypothesis
+| # | Hypothesis | Null Hypothesis (H₀) | Alternative Hypothesis (H₁) |
+| :--- | :--- | :--- | :--- |
+| 1 | **Time-Category Relationship** | There is **no** statistically significant relationship between the `hour_of_day` and the `categoryName` of consumed content. | There **is** a significant relationship between viewing time and content category (e.g., "Education" is higher in the morning, "Gaming" is higher at night). |
+| 2 | **Popularity Bias Analysis** | There is **no** significant difference in the average `viewCount` of videos I watch across different categories. | The average `viewCount` of videos I watch **differs** significantly between categories (e.g., "Music" is mainstream, "Education" is niche). |
+| 3 | **Time-Popularity Relationship** | There is **no** significant relationship between the `hour_of_day` and the `viewCount` of the content I consume. | There **is** a relationship between viewing time and content popularity (e.g., I watch low-view-count "niche" videos at specific times). |
 
-Null Hypothesis (H₀)
 
-Alternative Hypothesis (H₁)
-
-1
-
-Time-Category Relationship
-
-There is no statistically significant relationship between the hour_of_day and the categoryName of consumed content.
-
-There is a significant relationship between viewing time and content category (e.g., "Education" is higher in the morning, "Gaming" is higher at night).
-
-2
-
-Popularity Bias Analysis
-
-There is no significant difference in the average viewCount of videos I watch across different categories.
-
-The average viewCount of videos I watch differs significantly between categories (e.g., "Music" is mainstream, "Education" is niche).
-
-3
-
-Time-Popularity Relationship
-
-There is no significant relationship between the hour_of_day and the viewCount of the content I consume.
-
-There is a relationship between viewing time and content popularity (e.g., I watch low-view-count "niche" videos at specific times).
-
-Expected Findings
+## Expected Findings
 
 A clearly identifiable pattern in the EDA heatmap, showing that my viewing habits are not random (e.g., high activity on weeknight evenings).
 
@@ -142,7 +118,7 @@ Rejection of H₀ for Hypothesis 2: A significant ANOVA result showing that my c
 
 A Decision Tree model that can predict the content category with reasonable accuracy, based only on time-based features.
 
-Tools & Environment
+## Tools & Environment
 
 Language: Python 3.x
 
@@ -164,7 +140,7 @@ Development Environment: Jupyter Notebook / VS Code
 
 Version Control: Git and GitHub
 
-Ethical & AI Statement
+## Ethical & AI Statement
 
 All data sources are clearly cited. The primary dataset is my own personal data, obtained consentfully from Google Takeout, and will remain private. The enrichment data is from a public, documented API.
 
@@ -172,7 +148,7 @@ No private, sensitive, or personally identifiable information (PII) about other 
 
 AI tools (like LLMs) may be used for documentation clarity, code debugging, and syntax suggestions, but not for generating the core analysis, statistical interpretation, or final conclusions of the project. All analytical work and model building will be done independently by me.
 
-Future Work
+## Future Work
 
 Extend the analysis to a time-series model to see if my interests (categoryName popularity) have changed over the years.
 
