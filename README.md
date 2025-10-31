@@ -1,4 +1,4 @@
-Personal YouTube Watch Habits Analysis: Modeling Popularity, Category, and Timing
+# Personal YouTube Watch Habits Analysis: Modeling Popularity, Category, and Timing
 
 ## Abstract
 
