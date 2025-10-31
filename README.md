@@ -1,7 +1,5 @@
 Personal YouTube Watch Habits Analysis: Modeling Popularity, Category, and Timing
 
-(October 31, 2025)
-
 Abstract
 
 This project analyzes my personal YouTube viewing history to explore the relationship between my digital consumption patterns and public video metrics. The core methodology involves combining a private dataset of my watch history, obtained via Google Takeout, with a public dataset of video metadata, collected using the YouTube Data API v3. The aim is to understand how my viewing habits (e.g., time of day, day of week) correlate with content attributes (e.g., category, view count, like count). The project applies the full data science pipeline—including JSON parsing, API data collection, data merging, feature engineering, statistical testing, and machine learning—to identify significant relationships and build a predictive model of my content choices.
