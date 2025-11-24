@@ -20,30 +20,64 @@ To build and evaluate a machine learning model (e.g., Decision Tree) that predic
 
 To gain hands-on experience with JSON parsing, API integration, and data merging.
 
-## Data Sources
+## Data Sources & Enrichment (28 Nov Milestone)
 
-This project uses a hybrid model, combining a private dataset with a public API-driven dataset. Both are ethically obtained and clearly sourced.
+| Description | Source |
+| :--- | :--- |
+| Personal Watch History | My private, timestamped watch history (watch\_timestamp, video\_title, video\_ID). (**Successfully parsed from JSON format**). | Google Takeout |
+| Video Metadata (Enrichment) | Public video details (categoryName, viewCount, likeCount, duration). | YouTube Data API v3 |
 
-## Dataset
+**Data Collection Summary:** A total of **8000** valid viewing records were obtained after successfully parsing the **JSON** file and enriching the data by querying **7979** unique video IDs via the YouTube Data API v3. The final cleaned and enriched dataset is available in the `/data/` directory.
 
-Description
+---
 
-Source
+## Methodology, Cleaning, and Feature Engineering
 
-Personal Watch History
+### 1. Data Collection & Cleaning
 
-My private, timestamped watch history (watch_timestamp, video_title, video_ID).
+The primary watch history was parsed from the **JSON** file to extract `video_ID` and `watch_timestamp`. A custom Python script looped through these unique IDs, sending requests to the YouTube Data API v3 to enrich the data with public metrics (view count, category, duration). The two datasets were merged using `video_ID` as the primary key.
 
-Google Takeout
+### 2. Feature Engineering
 
-Video Metadata (Enrichment)
+The following features were created to enable statistical analysis and modeling:
 
-Public video details (categoryName, viewCount, likeCount, duration).
+* **Temporal Features:** `watch_timestamp` was parsed to create **`hour_of_day`** and **`day_of_week`** (categorical).
+* **Popularity Normalization:** `viewCount` and `likeCount` were transformed using the $\mathbf{\log(1+x)}$ function to create **`log\_viewCount`** and **`log\_likeCount`**, preparing the data for parametric statistical testing.
+* **Duration:** The ISO 8601 duration string was converted into **`duration\_seconds`** (numerical).
 
-YouTube Data API v3
 
-Both datasets will be merged using the video_ID as the primary key.
+## RESULTS & ANALYSIS 
+This section presents the findings from the Exploratory Data Analysis (EDA) and the results of the Hypotheses testing, fulfilling the second project milestone requirements.
 
+### 1. Exploratory Data Analysis (EDA) Findings
+
+#### A. Viewing Frequency Heatmap (Temporal Pattern)
+
+
+
+**Finding:** The heatmap confirms a non-random consumption pattern. The highest viewing intensity is clearly observed on **weekdays (Monday to Friday)**, with peak activity concentrated between **18:00 and 23:00**. This pattern strongly suggests that consumption is primarily focused on post-work/study leisure time.
+
+#### B. Popularity Distribution Boxplot (Niche vs. Mainstream)
+
+
+
+**Finding:** The boxplot visually supports the hypothesis of differing popularity biases. Videos in categories like **'Music' and 'Entertainment'** generally exhibit a **higher median $\log(View Count)$** (mainstream content) compared to categories like **'Education' and 'Science & Technology'**. This suggests that niche, lower view-count content is favored in educational categories.
+
+### 2. Hypothesis Testing Results
+
+The following statistical tests were performed using Python's `scipy` library ($\alpha = 0.05$).
+
+| # | Null Hypothesis (H₀) | Test Used | P-Value | Correlation (r) | Result |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | No relationship between `day_of_week` and `categoryName`. | Chi-Square | **$p \approx 0.0$** | N/A | **REJECTED** |
+| 2 | No significant difference in $\log(ViewCount)$ across categories. | ANOVA | **$p \approx 0.0$** | N/A | **REJECTED** |
+| 3 | No relationship between `hour_of_day` and $\log(ViewCount)$. | Pearson | **$p = 0.1704$** | **0.0153** | **NOT REJECTED** |
+
+#### Statistical Interpretation:
+
+* **Hypothesis 1 (Time-Category):** Given the extremely low p-value ($\mathbf{p \approx 0.0}$), the Null Hypothesis is **REJECTED**. This confirms that **the time and day of viewing significantly influence the category of content consumed**.
+* **Hypothesis 2 (Popularity Bias):** The result **REJECTS H₀** ($p \approx 0.0$), confirming that **there is a statistically significant difference** in the average popularity of videos watched across different categories.
+* **Hypothesis 3 (Time-Popularity):** The test resulted in a very weak correlation ($\mathbf{r = 0.0153}$) and a high p-value ($\mathbf{p = 0.1704}$). Since $p \ge 0.05$, the Null Hypothesis is **NOT REJECTED**. **No statistically significant linear relationship was found between the time of day and the inherent popularity of the content.**
 ## Methodology
 
 1. Data Collection & Cleaning
@@ -107,36 +141,24 @@ Model: Decision Tree Classifier or Random Forest to identify the most predictive
 | 2 | **Popularity Bias Analysis** | There is **no** significant difference in the average `viewCount` of videos I watch across different categories. | The average `viewCount` of videos I watch **differs** significantly between categories (e.g., "Music" is mainstream, "Education" is niche). |
 | 3 | **Time-Popularity Relationship** | There is **no** significant relationship between the `hour_of_day` and the `viewCount` of the content I consume. | There **is** a relationship between viewing time and content popularity (e.g., I watch low-view-count "niche" videos at specific times). |
 
-
-## Expected Findings
-
-A clearly identifiable pattern in the EDA heatmap, showing that my viewing habits are not random (e.g., high activity on weeknight evenings).
-
-Rejection of H₀ for Hypothesis 1: A significant Chi-square result showing that I reliably watch certain categories (like "Education" or "News") at specific times of day.
-
-Rejection of H₀ for Hypothesis 2: A significant ANOVA result showing that my consumption of categories like "Gaming" or "Entertainment" involves much more popular (higher view-count) videos than "Education" or "How-to" categories.
-
-A Decision Tree model that can predict the content category with reasonable accuracy, based only on time-based features.
-
 ## Tools & Environment
 
+Tools & Environment
 Language: Python 3.x
 
 Libraries:
 
-pandas, numpy (For data manipulation)
+pandas, numpy
 
-matplotlib, seaborn (For visualization)
+matplotlib, seaborn
 
-requests, google-api-python-client (For API interaction)
+google-api-python-client (For API interaction)
 
-json, BeautifulSoup (For parsing Takeout data)
+scipy (For statistical tests)
 
-scipy, statsmodels (For statistical tests)
+scikit-learn (For Machine Learning models - To be used in the 02 Jan milestone)
 
-scikit-learn (For Machine Learning models)
-
-Development Environment: Jupyter Notebook / VS Code
+Development Environment: Jupyter Notebook / Google Colab
 
 Version Control: Git and GitHub
 
@@ -149,6 +171,8 @@ No private, sensitive, or personally identifiable information (PII) about other 
 AI tools (like LLMs) may be used for documentation clarity, code debugging, and syntax suggestions, but not for generating the core analysis, statistical interpretation, or final conclusions of the project. All analytical work and model building will be done independently by me.
 
 ## Future Work
+
+The next phase involves Machine Learning: building a Decision Tree Classifier or Random Forest model to predict categoryName based on temporal features (hour_of_day, day_of_week).
 
 Extend the analysis to a time-series model to see if my interests (categoryName popularity) have changed over the years.
 
