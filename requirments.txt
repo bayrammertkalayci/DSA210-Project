@@ -1,0 +1,8 @@
+pandas
+numpy
+google-api-python-client
+isodate
+tqdm
+seaborn
+matplotlib
+scipy
